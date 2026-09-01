@@ -15,9 +15,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // mariadb uses native Node.js bindings — cannot be bundled by webpack
+  serverExternalPackages: ["mariadb"],
   // Security headers
   async headers() {
     return [
