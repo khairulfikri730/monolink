@@ -17,19 +17,39 @@ class LinkController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'url' => 'required|url|max:255',
+            'url' => 'required|url|max:2048',
+            'type' => 'nullable|in:CUSTOM,GOOGLE_MAPS,MAP',
         ]);
 
         $profile = $request->user()->profile;
         $maxOrder = $profile->links()->max('sort_order') ?? 0;
 
+        $url = trim($request->url);
+        $type = $request->filled('type') ? strtoupper($request->type) : null;
+        // Auto-detect Google Maps if type not explicitly set — highly custom: tinggal paste link Maps
+        if (!$type) {
+            $type = $this->isGoogleMapsUrl($url) ? 'GOOGLE_MAPS' : 'CUSTOM';
+        }
+
         $profile->links()->create([
             'title' => $request->title,
-            'url' => $request->url,
+            'url' => $url,
+            'type' => $type,
             'sort_order' => $maxOrder + 1,
         ]);
 
-        return back()->with('success', 'Link added successfully.');
+        $msg = $type === 'GOOGLE_MAPS' ? 'Lokasi Maps berhasil ditambahkan!' : 'Link added successfully.';
+        return back()->with('success', $msg);
+    }
+
+    private function isGoogleMapsUrl(string $url): bool
+    {
+        $lower = strtolower($url);
+        return str_contains($lower, 'google.com/maps')
+            || str_contains($lower, 'maps.google.')
+            || str_contains($lower, 'maps.app.goo.gl')
+            || str_contains($lower, 'goo.gl/maps')
+            || str_contains($lower, 'google.co.id/maps');
     }
 
     public function toggle(Request $request, Link $link)

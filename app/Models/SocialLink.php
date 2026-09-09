@@ -28,4 +28,20 @@ class SocialLink extends Model
             default      => '🔗',
         };
     }
+
+    // Monokrom thin lucide — 21st.dev hero-banner style (stroke 1.75)
+    // NOTE: lucide@1.43 bundle di unpkg TIDAK mengandung brand icons (instagram/facebook/youtube/linkedin)
+    // jadi mapping ke icon lucide yang ada: camera/users/play/briefcase
+    public function getLucideIconAttribute(): string
+    {
+        return match(strtoupper($this->platform)) {
+            'INSTAGRAM' => 'camera',
+            'TIKTOK'    => 'music-2',
+            'YOUTUBE'   => 'play',
+            'FACEBOOK'  => 'users',
+            'LINKEDIN'  => 'briefcase',
+            'X_TWITTER', 'TWITTER', 'X' => 'bird',
+            default     => 'link-2',
+        };
+    }
 }

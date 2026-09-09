@@ -40,20 +40,28 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(6px);} to {opacity:1; transform: translateY(0);} }
+        /* Professional scrollbar */
+        ::-webkit-scrollbar { width:6px; height:6px; }
+        ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
+        ::-webkit-scrollbar-thumb:hover { background:#94a3b8; }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-900">
-    <div class="min-h-screen flex flex-col md:flex-row">
+<body class="font-sans antialiased text-gray-900 min-h-screen md:h-screen md:overflow-hidden">
+    <div class="min-h-screen md:h-screen flex flex-col md:flex-row md:overflow-hidden">
         
-        <!-- Sidebar -->
-        <aside class="w-full md:w-64 bg-white border-r border-gray-200 flex-shrink-0" x-data="{ open: false }">
-            <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                <a href="{{ route('dashboard') }}" class="text-xl font-bold text-gray-900 tracking-tight">Mono<span class="text-brand-600">link</span></a>
-                <button @click="open = !open" class="md:hidden text-gray-500">
-                    <i data-lucide="menu"></i>
+        <!-- Sidebar — fixed on desktop, top on mobile -->
+        <aside class="w-full md:w-[260px] bg-white border-r border-gray-200/70 flex-shrink-0 md:h-screen md:overflow-y-auto overflow-visible" x-data="{ open: false }">
+            <div class="flex items-center justify-between p-5 border-b border-gray-200/70">
+                <a href="{{ route('dashboard') }}" class="text-[20px] font-bold text-gray-900 tracking-tight">Mono<span class="text-brand-600">link</span></a>
+                <button @click="open = !open" class="md:hidden p-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
             </div>
             
@@ -98,37 +106,43 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
-            <!-- Topbar (Mobile Profile Link) -->
-            <header class="bg-white border-b border-gray-200 py-3 px-6 flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">@yield('title', 'Dashboard')</h2>
-                <a href="{{ route('public.profile', auth()->user()->profile->username) }}" target="_blank" class="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1.5 rounded-full hover:bg-brand-100 transition">
-                    View Live Profile →
+        <!-- Main Content — header + scrollable content -->
+        <main class="flex-1 flex flex-col md:h-screen md:overflow-hidden bg-[#f8fafc] min-w-0 min-h-0">
+            <!-- Topbar — tetap di atas, tidak ikut scroll -->
+            <header class="flex-shrink-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200/70 py-3.5 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+                <div class="min-w-0">
+                    <h2 class="text-[18px] sm:text-xl font-semibold text-gray-800 tracking-tight truncate">@yield('title', 'Dashboard')</h2>
+                    <p class="text-xs text-gray-400 hidden sm:block mt-0.5">Kelola tampilan profesional monolink Anda</p>
+                </div>
+                <a href="{{ route('public.profile', auth()->user()->profile->username) }}" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 bg-brand-50 px-3.5 py-2 rounded-full hover:bg-brand-100 transition flex-shrink-0">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    <span class="hidden sm:inline">View Live Profile</span><span class="sm:hidden">Live</span>
                 </a>
             </header>
 
-            <div class="p-6 max-w-5xl mx-auto">
-                
-                @if (session('success'))
-                    <div class="mb-6 bg-green-50 text-green-700 p-4 rounded-xl border border-green-200 flex items-center gap-3">
-                        <i data-lucide="check-circle" class="w-5 h-5"></i> {{ session('success') }}
-                    </div>
-                @endif
-                
-                @if (session('error'))
-                    <div class="mb-6 bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 flex items-center gap-3">
-                        <i data-lucide="alert-circle" class="w-5 h-5"></i> {{ session('error') }}
-                    </div>
-                @endif
+            <!-- Scrollable content — hanya bagian ini yang scroll di desktop -->
+            <div id="main-scroll" class="flex-1 md:overflow-y-auto overflow-visible p-4 sm:p-6 lg:p-8 min-h-0">
+                <div class="max-w-7xl mx-auto w-full">
+                    @if (session('success'))
+                        <div class="mb-6 bg-green-50 text-green-700 p-4 rounded-xl border border-green-200 flex items-center gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i> {{ session('success') }}
+                        </div>
+                    @endif
+                    
+                    @if (session('error'))
+                        <div class="mb-6 bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 flex items-center gap-3">
+                            <i data-lucide="alert-circle" class="w-5 h-5"></i> {{ session('error') }}
+                        </div>
+                    @endif
 
-                @yield('content')
+                    @yield('content')
+                </div>
             </div>
         </main>
     </div>
 
     <script>
-        lucide.createIcons();
+        if(window.lucide && lucide.icons) lucide.createIcons({icons: lucide.icons});
     </script>
     @stack('scripts')
 </body>
