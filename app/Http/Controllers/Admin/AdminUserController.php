@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -30,19 +31,21 @@ class AdminUserController extends Controller
             'role' => ['required', 'in:admin,user'],
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
-        ]);
+        DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => $validated['role'],
+            ]);
 
-        // Auto-create Profile and Default Theme
-        $profile = $user->profile()->create([
-            'username' => 'user_' . uniqid(),
-            'display_name' => $validated['name'],
-        ]);
-        $profile->theme()->create(\App\Models\Theme::defaults());
+            // Auto-create Profile and Default Theme
+            $profile = $user->profile()->create([
+                'username' => \App\Http\Controllers\Auth\RegisteredUserController::uniqueUsername($validated['name']),
+                'display_name' => $validated['name'],
+            ]);
+            $profile->theme()->create(\App\Models\Theme::defaults());
+        });
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }

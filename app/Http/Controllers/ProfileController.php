@@ -19,11 +19,19 @@ class ProfileController extends Controller
         $profile = $request->user()->profile;
 
         $validated = $request->validate([
-            'username' => ['required', 'string', 'max:50', 'alpha_dash', Rule::unique('profiles')->ignore($profile->id)],
+            'username' => [
+                'required', 'string', 'max:50', 'alpha_dash',
+                Rule::unique('profiles')->ignore($profile->id),
+                Rule::notIn([
+                    'admin', 'dashboard', 'login', 'logout', 'register', 'account',
+                    'l', 'storage', 'up', 'api', 'password', 'settings', 'profile',
+                    'confirm-password', 'forgot-password', 'reset-password', 'verify-email',
+                ]),
+            ],
             'display_name' => ['required', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:100'],
-            'website' => ['nullable', 'url', 'max:255'],
+            'website' => ['nullable', 'url:schema,http,https', 'max:255'],
             'profile_image' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,webp'],
             'is_published' => ['nullable', 'boolean'],
         ]);

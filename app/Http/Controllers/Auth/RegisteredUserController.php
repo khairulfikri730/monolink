@@ -8,7 +8,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -36,23 +38,38 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        // Auto-create Profile and Default Theme
-        $profile = $user->profile()->create([
-            'username' => 'user_' . uniqid(),
-            'display_name' => $request->name,
-        ]);
-        $profile->theme()->create(\App\Models\Theme::defaults());
+            // Auto-create Profile and Default Theme
+            $profile = $user->profile()->create([
+                'username' => static::uniqueUsername($request->name),
+                'display_name' => $request->name,
+            ]);
+            $profile->theme()->create(\App\Models\Theme::defaults());
+
+            return $user;
+        });
 
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    public static function uniqueUsername(string $name): string
+    {
+        $base = Str::slug($name, '_') ?: 'user';
+
+        do {
+            $candidate = Str::lower($base . '_' . Str::random(6));
+        } while (\App\Models\Profile::where('username', $candidate)->exists());
+
+        return $candidate;
     }
 }

@@ -44,10 +44,10 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: {!! json_encode($chartLabels) !!},
+                labels: {!! json_encode($chartLabels, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!},
                 datasets: [{
                     label: 'Profile Views',
-                    data: {!! json_encode($chartData) !!},
+                    data: {!! json_encode($chartData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!},
                     borderColor: '#2563eb',
                     backgroundColor: 'rgba(37, 99, 235, 0.1)',
                     borderWidth: 2,

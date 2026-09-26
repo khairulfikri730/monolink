@@ -18,7 +18,7 @@ class AppearanceController extends Controller
     public function update(Request $request)
     {
         // Normalize layout case-insensitive before validation
-        if ($request->has('layout')) {
+        if (is_string($request->input('layout'))) {
             $request->merge(['layout' => strtolower(trim($request->input('layout')))]);
         }
         $request->validate([
@@ -27,7 +27,7 @@ class AppearanceController extends Controller
             'gradient_direction'   => 'nullable|string|in:to right,to left,to bottom,to top,to bottom right,to bottom left,to top right,to top left',
             'gradient_colors'      => 'nullable|array|max:5',
             'gradient_colors.*'    => ['nullable','regex:/^#[0-9a-fA-F]{6}$/'],
-            'background_image_url' => 'nullable|url|max:2048',
+            'background_image_url' => 'nullable|url:schema,http,https|max:2048',
             'background_image_file'=> 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:2048',
             'primary_color'        => ['required','regex:/^#[0-9a-fA-F]{6}$/'],
             'secondary_color'      => ['required','regex:/^#[0-9a-fA-F]{6}$/'],
@@ -42,7 +42,11 @@ class AppearanceController extends Controller
 
         $profile = $request->user()->profile;
 
-        $data = $request->except(['background_image_file', 'background_image_url', '_token']);
+        $data = $request->only([
+            'background_type', 'background_value', 'gradient_direction', 'gradient_colors',
+            'primary_color', 'secondary_color', 'text_color', 'button_color',
+            'button_text_color', 'button_style', 'font_family', 'layout',
+        ]);
 
         // Handle background_image for IMAGE type
         if ($request->background_type === 'IMAGE') {

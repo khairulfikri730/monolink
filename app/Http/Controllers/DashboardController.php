@@ -12,7 +12,13 @@ class DashboardController extends Controller
         
         if (!$profile) {
             // Failsafe in case profile wasn't created
-            return redirect()->route('profile'); 
+            $profile = $request->user()->profile()->create([
+                'username' => \App\Http\Controllers\Auth\RegisteredUserController::uniqueUsername($request->user()->name),
+                'display_name' => $request->user()->name,
+            ]);
+            $profile->theme()->create(\App\Models\Theme::defaults());
+
+            return redirect()->route('dashboard');
         }
 
         $profileViews = $profile->analyticsEvents()->where('event_type', 'PROFILE_VIEW')->count();

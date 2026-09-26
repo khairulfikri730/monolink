@@ -17,7 +17,7 @@ class LinkController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'url' => 'required|url|max:2048',
+            'url' => 'required|url:schema,http,https|max:2048',
             'type' => 'nullable|in:CUSTOM,GOOGLE_MAPS,MAP',
         ]);
 
@@ -78,11 +78,11 @@ class LinkController extends Controller
             'ordered_ids' => 'required|string',
         ]);
 
-        $ids = explode(',', $request->ordered_ids);
+        $ids = array_filter(array_map('intval', explode(',', $request->ordered_ids)));
         $profileId = $request->user()->profile->id;
 
-        foreach ($ids as $index => $id) {
-            Link::where('id', $id)->where('profile_id', $profileId)->update(['sort_order' => $index]);
+        foreach (array_values($ids) as $index => $id) {
+            Link::where('id', $id)->where('profile_id', $profileId)->update(['sort_order' => $index + 1]);
         }
 
         return back()->with('success', 'Links reordered.');

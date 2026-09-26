@@ -369,24 +369,20 @@
                         @php
                             $raw = trim($link->url);
                             $resolved = $raw;
-                            if (preg_match('/maps\.app\.goo\.gl|goo\.gl\/maps/i', $raw)) {
-                                $heads = @get_headers($raw, 1);
-                                if ($heads && isset($heads['Location'])) {
-                                    $loc = is_array($heads['Location']) ? end($heads['Location']) : $heads['Location'];
-                                    if ($loc && filter_var($loc, FILTER_VALIDATE_URL)) $resolved = $loc;
-                                }
-                            }
                             $latLng = null;
                             if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $resolved, $m)) {
                                 $latLng = $m[1] . ',' . $m[2];
                             } elseif (preg_match('/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/', $resolved, $m)) {
                                 $latLng = $m[1] . ',' . $m[2];
                             }
+                            $host = strtolower((string) parse_url($resolved, PHP_URL_HOST));
+                            $isGoogleHost = $host === 'google.com' || str_ends_with($host, '.google.com')
+                                || $host === 'goo.gl' || str_ends_with($host, '.goo.gl');
                             if ($latLng) {
                                 $src = 'https://www.google.com/maps?q=' . $latLng . '&hl=en&z=15&output=embed';
-                            } elseif (str_contains($resolved, '/embed')) {
+                            } elseif ($isGoogleHost && str_contains($resolved, '/embed')) {
                                 $src = $resolved;
-                            } elseif (str_contains($resolved, 'google.com/maps') || str_contains($resolved, 'maps.google.')) {
+                            } elseif ($isGoogleHost && str_contains($resolved, '/maps')) {
                                 $sep = str_contains($resolved, '?') ? '&' : '?';
                                 $src = $resolved . $sep . 'output=embed';
                             } else {

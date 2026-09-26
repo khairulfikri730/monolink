@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController as BreezeProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LinkController;
@@ -20,7 +19,7 @@ Route::get('/', function () {
 });
 
 // User Dashboard & Management (Requires Auth)
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -52,15 +51,10 @@ Route::middleware('auth')->group(function () {
         // Analytics
         Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     });
-
-    // Laravel Breeze Default Profile Setting Routes
-    Route::get('/account/profile', [BreezeProfileController::class, 'edit'])->name('account.profile.edit');
-    Route::patch('/account/profile', [BreezeProfileController::class, 'update'])->name('account.profile.update');
-    Route::delete('/account/profile', [BreezeProfileController::class, 'destroy'])->name('account.profile.destroy');
 });
 
 // Admin Panel
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'active', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('users', AdminUserController::class)->except(['show']);
     Route::patch('users/{user}/status', [AdminUserController::class, 'toggleStatus'])->name('users.status');
@@ -70,4 +64,6 @@ require __DIR__.'/auth.php';
 
 // Public Routes
 Route::get('/l/{link}', [LinkClickController::class, 'redirect'])->name('link.redirect');
-Route::get('/{username}', [PublicProfileController::class, 'show'])->name('public.profile');
+Route::get('/{username}', [PublicProfileController::class, 'show'])
+    ->where('username', '[A-Za-z0-9\-_]+')
+    ->name('public.profile');

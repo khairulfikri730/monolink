@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SocialLinkController extends Controller
 {
@@ -17,8 +18,8 @@ class SocialLinkController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'platform' => 'required|string',
-            'url' => 'required|url|max:255',
+            'platform' => ['required', 'string', Rule::in(['INSTAGRAM', 'TIKTOK', 'YOUTUBE', 'FACEBOOK', 'LINKEDIN', 'X_TWITTER'])],
+            'url' => 'required|url:schema,http,https|max:255',
         ]);
 
         $profile = $request->user()->profile;
