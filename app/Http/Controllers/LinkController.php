@@ -31,6 +31,13 @@ class LinkController extends Controller
             $type = $this->isGoogleMapsUrl($url) ? 'GOOGLE_MAPS' : 'CUSTOM';
         }
 
+        // For Maps links, expand Google shorteners (maps.app.goo.gl / g.co) to the
+        // long URL that carries @lat,lng so the public-page embed can render it.
+        // Safe: request only ever goes to a fixed Google host, never user input.
+        if ($type === 'GOOGLE_MAPS') {
+            $url = $this->resolveMapsUrl($url);
+        }
+
         $profile->links()->create([
             'title' => $request->title,
             'url' => $url,
@@ -50,6 +57,34 @@ class LinkController extends Controller
             || str_contains($lower, 'maps.app.goo.gl')
             || str_contains($lower, 'goo.gl/maps')
             || str_contains($lower, 'google.co.id/maps');
+    }
+
+    /**
+     * Expand a Google Maps shortener to its long form (which contains @lat,lng).
+     * Only ever contacts fixed Google shortener hosts, so it cannot be pointed
+     * at internal/volatile endpoints. Returns the original URL on any failure.
+     */
+    private function resolveMapsUrl(string $url): string
+    {
+        $host = strtolower((string) parse_url($url, PHP_URL_HOST));
+        $shorteners = ['maps.app.goo.gl', 'g.co', 'www.g.co'];
+
+        if (!in_array($host, $shorteners, true)) {
+            return $url;
+        }
+
+        $headers = @get_headers($url, 1);
+        if (is_array($headers)) {
+            $location = $headers['Location'] ?? null;
+            if (is_array($location)) {
+                $location = end($location);
+            }
+            if ($location && filter_var($location, FILTER_VALIDATE_URL)) {
+                return $location;
+            }
+        }
+
+        return $url;
     }
 
     public function toggle(Request $request, Link $link)
