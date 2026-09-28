@@ -44,15 +44,15 @@
                 <div class="relative flex-1 flex flex-col justify-center max-w-[560px] mx-auto w-full py-8">
                     <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full w-fit">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Trusted by creators, brands & UMKM
+                        Cocok untuk kreator, bisnis, maupun personal
                     </div>
                     <h1 class="mt-5 text-[34px] xl:text-[40px] font-bold leading-[0.95] tracking-tight">
                         Satu link<br>
                         <span class="text-white/80 font-medium">untuk semua</span><br>
-                        karya Anda.
+                        tautan Anda.
                     </h1>
                     <p class="mt-4 text-[15px] leading-relaxed text-white/70 max-w-[44ch]">
-                        Buat halaman bio profesional, atur link, sosial & tampilan tanpa coding. <span class="text-white font-medium">Simple to create. Easy to customize.</span>
+                        Buat halaman bio, kelola tautan, media sosial, dan tampilannya tanpa coding. <span class="text-white font-medium">Mudah dibuat. Fleksibel diatur.</span>
                     </p>
 
                     <!-- Phone preview mock -->
@@ -63,8 +63,8 @@
                                 <div class="w-14 h-14 rounded-full bg-white mx-auto border-2 border-white/30 shadow-md overflow-hidden">
                                     <img src="https://i.pravatar.cc/112?img=12" class="w-full h-full object-cover" alt="avatar">
                                 </div>
-                                <p class="mt-3 text-[13px] font-bold tracking-tight">Aura Ashel</p>
-                                <p class="text-[11px] text-white/70">Digital Creator • Padang</p>
+                                <p class="mt-3 text-[13px] font-bold tracking-tight">Nama Anda</p>
+                                <p class="text-[11px] text-white/70">Kreator • Kota Anda</p>
                                 <div class="mt-3 space-y-2">
                                     <div class="h-9 rounded-full bg-transparent border border-white text-white flex items-center justify-center text-xs font-medium">Instagram</div>
                                     <div class="h-9 rounded-full bg-white text-[#071A8C] flex items-center justify-center text-xs font-bold">WhatsApp</div>
@@ -77,22 +77,22 @@
                             <div class="flex items-center gap-3 bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur">
                                 <span class="w-9 h-9 rounded-xl bg-white text-[#071A8C] flex items-center justify-center flex-shrink-0"><i data-lucide="palette" class="w-4 h-4"></i></span>
                                 <div>
-                                    <p class="text-sm font-semibold leading-none">Appearance</p>
-                                    <p class="text-xs text-white/60">Navy • Outline 28px</p>
+                                    <p class="text-sm font-semibold leading-none">Tampilan</p>
+                                    <p class="text-xs text-white/60">Atur warna &amp; gaya</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3 bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur">
                                 <span class="w-9 h-9 rounded-xl bg-white text-emerald-600 flex items-center justify-center flex-shrink-0"><i data-lucide="bar-chart-3" class="w-4 h-4"></i></span>
                                 <div>
-                                    <p class="text-sm font-semibold leading-none">Analytics</p>
-                                    <p class="text-xs text-white/60">Views & clicks realtime</p>
+                                    <p class="text-sm font-semibold leading-none">Analitik</p>
+                                    <p class="text-xs text-white/60">Pantau kunjungan &amp; klik</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3 bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur">
                                 <span class="w-9 h-9 rounded-xl bg-white text-violet-600 flex items-center justify-center flex-shrink-0"><i data-lucide="share-2" class="w-4 h-4"></i></span>
                                 <div>
-                                    <p class="text-sm font-semibold leading-none">Share & QR</p>
-                                    <p class="text-xs text-white/60">domain.com/username</p>
+                                    <p class="text-sm font-semibold leading-none">Bagikan &amp; QR</p>
+                                    <p class="text-xs text-white/60">Tautan pendek &amp; kode QR</p>
                                 </div>
                             </div>
                         </div>
