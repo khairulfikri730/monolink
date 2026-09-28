@@ -46,7 +46,7 @@
                             <p class="text-xs text-gray-500 mt-1">Pilih template profesional secara instan</p>
                         </div>
                     </div>
-                    <span class="hidden sm:inline-flex text-[11px] font-medium tracking-widest uppercase text-gray-400 bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-full">12 Templates</span>
+                    <span class="hidden sm:inline-flex text-[11px] font-medium tracking-widest uppercase text-gray-400 bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-full">14 Templates</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                     <button type="button" onclick="applyTemplate('linktree-navy')" data-template="linktree-navy" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 transition-all text-left">
@@ -156,6 +156,24 @@
                         </div>
                         <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Forest Sage</span>
                         <span class="text-[11px] text-gray-400">Alami • Tenang</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('purple-dream')" data-template="purple-dream" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl border border-purple-300 flex flex-col items-center justify-center gap-1.5 shadow-sm" style="background:linear-gradient(to bottom right,#7e22ce,#a855f7)">
+                            <div class="w-10 h-10 rounded-full bg-white/90 border border-white"></div>
+                            <div class="w-16 h-3.5 bg-white rounded-full"></div>
+                            <div class="w-20 h-2 bg-white/50 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Purple Dream</span>
+                        <span class="text-[11px] text-gray-400">Ungu • Berani</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('pink-sweet')" data-template="pink-sweet" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl bg-pink-50 border border-pink-200 flex flex-col items-center justify-center gap-1.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-full bg-pink-500 border border-pink-300"></div>
+                            <div class="w-16 h-3.5 bg-pink-600 rounded-full"></div>
+                            <div class="w-20 h-2 bg-pink-200 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Pink Sweet</span>
+                        <span class="text-[11px] text-gray-400">Manis • Ceria</span>
                     </button>
                 </div>
             </div>
@@ -481,6 +499,19 @@ const templates = {
         text_color: '#f0fdf4', primary_color: '#bbf7d0',
         button_color: '#dcfce7', button_text_color: '#14532d',
         font_family: 'Nunito', button_style: 'ROUNDED', layout: 'left'
+    },
+    'purple-dream': {
+        background_type: 'GRADIENT', background_value: '',
+        gradient_colors: ['#7e22ce','#a855f7'], gradient_direction: 'to bottom right',
+        text_color: '#faf5ff', primary_color: '#ffffff',
+        button_color: '#ffffff', button_text_color: '#6b21a8',
+        font_family: 'Poppins', button_style: 'ROUNDED', layout: 'center'
+    },
+    'pink-sweet': {
+        background_type: 'SOLID', background_value: '#fdf2f8',
+        text_color: '#831843', primary_color: '#ec4899',
+        button_color: '#ec4899', button_text_color: '#ffffff',
+        font_family: 'Nunito', button_style: 'PILL', layout: 'center'
     }
 };
 
