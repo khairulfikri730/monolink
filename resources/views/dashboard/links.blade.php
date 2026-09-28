@@ -102,42 +102,77 @@
         <div id="sortable-links" class="divide-y divide-gray-100">
             @foreach($links as $link)
             @php $isMaps = in_array(strtoupper($link->type ?? ''), ['GOOGLE_MAPS','MAP']); @endphp
-            <div class="p-4 flex items-center gap-3 sm:gap-4 bg-white hover:bg-gray-50/70 transition group" data-id="{{ $link->id }}">
-                <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 flex-shrink-0 cursor-grab active:cursor-grabbing group-hover:text-gray-400"></i>
-                
-                <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 border shadow-sm {{ $isMaps ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-gray-50 border-gray-200 text-gray-500' }}">
-                    @if($isMaps)
-                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                    @else
-                        <i data-lucide="link-2" class="w-4 h-4"></i>
-                    @endif
-                </span>
+            <div x-data="{ edit: false }" class="bg-white hover:bg-gray-50/70 transition" data-id="{{ $link->id }}">
+                {{-- Baris tampil --}}
+                <div x-show="!edit" class="p-4 flex items-center gap-3 sm:gap-4">
+                    <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 flex-shrink-0 cursor-grab active:cursor-grabbing group-hover:text-gray-400"></i>
 
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2">
-                        <p class="text-sm font-semibold text-gray-900 truncate">{{ $link->title }}</p>
+                    <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 border shadow-sm {{ $isMaps ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-gray-50 border-gray-200 text-gray-500' }}">
                         @if($isMaps)
-                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold tracking-widest uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">MAP</span>
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        @else
+                            <i data-lucide="link-2" class="w-4 h-4"></i>
                         @endif
+                    </span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <p class="text-sm font-semibold text-gray-900 truncate">{{ $link->title }}</p>
+                            @if($isMaps)
+                                <span class="inline-flex items-center gap-1 text-[11px] font-semibold tracking-widest uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">MAP</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-500 truncate">{{ $link->url }}</p>
                     </div>
-                    <p class="text-xs text-gray-500 truncate">{{ $link->url }}</p>
-                </div>
-                
-                <div class="flex items-center gap-1.5 flex-shrink-0">
-                    <form action="{{ route('dashboard.links.toggle', $link) }}" method="POST">
-                        @csrf @method('PATCH')
-                        <button type="submit" class="relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none {{ $link->is_active ? 'bg-gray-900' : 'bg-gray-200' }}" title="{{ $link->is_active ? 'Aktif' : 'Nonaktif' }}">
-                            <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $link->is_active ? 'translate-x-4' : 'translate-x-0' }}"></span>
+
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button type="button" @click="edit = true" class="p-2 text-gray-400 hover:text-indigo-600 rounded-xl hover:bg-indigo-50 transition" title="Edit link">
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
                         </button>
-                    </form>
-                    
-                    <form action="{{ route('dashboard.links.destroy', $link) }}" method="POST" onsubmit="return confirm('Hapus {{ $isMaps ? 'lokasi' : 'link' }} ini?');">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="p-2 text-gray-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </form>
+                        <form action="{{ route('dashboard.links.toggle', $link) }}" method="POST">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none {{ $link->is_active ? 'bg-gray-900' : 'bg-gray-200' }}" title="{{ $link->is_active ? 'Aktif' : 'Nonaktif' }}">
+                                <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $link->is_active ? 'translate-x-4' : 'translate-x-0' }}"></span>
+                            </button>
+                        </form>
+
+                        <form action="{{ route('dashboard.links.destroy', $link) }}" method="POST" onsubmit="return confirm('Hapus {{ $isMaps ? 'lokasi' : 'link' }} ini?');">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="p-2 text-gray-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
+
+                {{-- Form edit inline --}}
+                <form x-show="edit" x-cloak x-transition.action.opacity.duration.200ms
+                      action="{{ route('dashboard.links.update', $link) }}" method="POST"
+                      class="p-4 space-y-3 border-l-4 border-indigo-500 bg-indigo-50/40">
+                    @csrf @method('PATCH')
+                    <input type="hidden" name="type" value="{{ $link->type }}">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">Judul</label>
+                            <input type="text" name="title" value="{{ $link->title }}" required
+                                   class="block w-full rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-3.5 py-2.5 shadow-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">URL</label>
+                            <input type="url" name="url" value="{{ $link->url }}" required
+                                   class="block w-full rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-3.5 py-2.5 shadow-sm bg-white">
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-gray-500">
+                        {{ $isMaps ? 'Link Maps pendek (maps.app.goo.gl) akan otomatis diperpanjang saat disimpan.' : '' }}
+                    </p>
+                    <div class="flex items-center gap-2 justify-end">
+                        <button type="button" @click="edit = false" class="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 transition">Batal</button>
+                        <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition">
+                            <i data-lucide="check" class="w-4 h-4"></i> Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
             @endforeach
         </div>

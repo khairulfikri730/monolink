@@ -46,7 +46,7 @@
                             <p class="text-xs text-gray-500 mt-1">Pilih template profesional secara instan</p>
                         </div>
                     </div>
-                    <span class="hidden sm:inline-flex text-[11px] font-medium tracking-widest uppercase text-gray-400 bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-full">8 Templates</span>
+                    <span class="hidden sm:inline-flex text-[11px] font-medium tracking-widest uppercase text-gray-400 bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-full">12 Templates</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                     <button type="button" onclick="applyTemplate('linktree-navy')" data-template="linktree-navy" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 transition-all text-left">
@@ -120,6 +120,42 @@
                         </div>
                         <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Midnight Glass</span>
                         <span class="text-[11px] text-gray-400">Premium • Glass</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('sunset-vibe')" data-template="sunset-vibe" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl border border-orange-200 flex flex-col items-center justify-center gap-1.5 shadow-sm" style="background:linear-gradient(to bottom,#ff9a66,#ff5e62)">
+                            <div class="w-10 h-10 rounded-full bg-white/90 border border-white"></div>
+                            <div class="w-16 h-3.5 bg-white rounded-full"></div>
+                            <div class="w-20 h-2 bg-white/60 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Sunset Vibe</span>
+                        <span class="text-[11px] text-gray-400">Hangat • Cerah</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('ocean-breeze')" data-template="ocean-breeze" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl border border-sky-200 flex flex-col items-center justify-center gap-1.5 shadow-sm" style="background:linear-gradient(to bottom right,#0ea5e9,#22d3ee)">
+                            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur border border-white/50"></div>
+                            <div class="w-16 h-3.5 bg-white/85 rounded-full"></div>
+                            <div class="w-20 h-2 bg-white/40 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Ocean Breeze</span>
+                        <span class="text-[11px] text-gray-400">Segar • Glass</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('royal-gold')" data-template="royal-gold" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl bg-[#0c0a09] border border-amber-500/40 flex flex-col items-center justify-center gap-1.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-full bg-amber-400/15 border border-amber-400/60"></div>
+                            <div class="w-16 h-3.5 bg-amber-400 rounded-full"></div>
+                            <div class="w-20 h-2 bg-amber-400/30 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Royal Gold</span>
+                        <span class="text-[11px] text-gray-400">Elegan • Mewah</span>
+                    </button>
+                    <button type="button" onclick="applyTemplate('forest-sage')" data-template="forest-sage" class="template-card group flex flex-col gap-2.5 p-3 rounded-2xl border-2 border-gray-100 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left">
+                        <div class="w-full h-[72px] rounded-xl bg-[#14532d] border border-green-900 flex flex-col items-center justify-center gap-1.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-full bg-green-100 border border-green-200"></div>
+                            <div class="w-16 h-3.5 bg-green-100 rounded-full"></div>
+                            <div class="w-20 h-2 bg-green-100/30 rounded-full"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-700 group-hover:text-indigo-700 leading-tight">Forest Sage</span>
+                        <span class="text-[11px] text-gray-400">Alami • Tenang</span>
                     </button>
                 </div>
             </div>
@@ -419,6 +455,32 @@ const templates = {
         text_color: '#f1f5f9', primary_color: '#38bdf8',
         button_color: '#e2e8f0', button_text_color: '#0f172a',
         font_family: 'Inter', button_style: 'GLASS', layout: 'center'
+    },
+    'sunset-vibe': {
+        background_type: 'GRADIENT', background_value: '',
+        gradient_colors: ['#ff9a66','#ff5e62'], gradient_direction: 'to bottom',
+        text_color: '#ffffff', primary_color: '#ffffff',
+        button_color: '#ffffff', button_text_color: '#c2410c',
+        font_family: 'Poppins', button_style: 'PILL', layout: 'center'
+    },
+    'ocean-breeze': {
+        background_type: 'GRADIENT', background_value: '',
+        gradient_colors: ['#0ea5e9','#22d3ee'], gradient_direction: 'to bottom right',
+        text_color: '#f0f9ff', primary_color: '#ffffff',
+        button_color: '#ffffff', button_text_color: '#0369a1',
+        font_family: 'Inter', button_style: 'GLASS', layout: 'center'
+    },
+    'royal-gold': {
+        background_type: 'SOLID', background_value: '#0c0a09',
+        text_color: '#fafaf9', primary_color: '#fbbf24',
+        button_color: '#f59e0b', button_text_color: '#1c1917',
+        font_family: 'Playfair Display', button_style: 'SHADOW', layout: 'center'
+    },
+    'forest-sage': {
+        background_type: 'SOLID', background_value: '#14532d',
+        text_color: '#f0fdf4', primary_color: '#bbf7d0',
+        button_color: '#dcfce7', button_text_color: '#14532d',
+        font_family: 'Nunito', button_style: 'ROUNDED', layout: 'left'
     }
 };
 

@@ -87,6 +87,34 @@ class LinkController extends Controller
         return $url;
     }
 
+    public function update(Request $request, Link $link)
+    {
+        if ($link->profile_id !== $request->user()->profile->id) {
+            abort(403);
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'url' => 'required|url:schema,http,https|max:2048',
+            'type' => 'nullable|in:CUSTOM,GOOGLE_MAPS,MAP',
+        ]);
+
+        $url = trim($request->url);
+        $type = $request->filled('type') ? strtoupper($request->type) : $link->type;
+
+        if ($type === 'GOOGLE_MAPS') {
+            $url = $this->resolveMapsUrl($url);
+        }
+
+        $link->update([
+            'title' => $request->title,
+            'url' => $url,
+            'type' => $type,
+        ]);
+
+        return back()->with('success', 'Link berhasil diperbarui.');
+    }
+
     public function toggle(Request $request, Link $link)
     {
         if ($link->profile_id !== $request->user()->profile->id) {

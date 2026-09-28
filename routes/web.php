@@ -31,6 +31,7 @@ Route::middleware(['auth', 'active'])->group(function () {
         // Links Manager
         Route::get('/links', [LinkController::class, 'index'])->name('links');
         Route::post('/links', [LinkController::class, 'store'])->name('links.store');
+        Route::patch('/links/{link}', [LinkController::class, 'update'])->name('links.update');
         Route::patch('/links/{link}/toggle', [LinkController::class, 'toggle'])->name('links.toggle');
         Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
         Route::post('/links/reorder', [LinkController::class, 'reorder'])->name('links.reorder');
