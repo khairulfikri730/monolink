@@ -15,6 +15,17 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Username (Bio Link)</label>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-400">monolink.monodev.id/</span>
+                    <input type="text" name="username" value="{{ old('username', $user->profile?->username) }}" required
+                           pattern="[A-Za-z0-9_-]+" maxlength="50"
+                           class="flex-1 block rounded-md border-gray-300 focus:border-brand-500 sm:text-sm px-3 py-2 border">
+                </div>
+                @error('username') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                 <input type="email" name="email" value="{{ old('email', $user->email) }}" required class="block w-full rounded-md border-gray-300 focus:border-brand-500 sm:text-sm px-3 py-2 border">
                 @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror

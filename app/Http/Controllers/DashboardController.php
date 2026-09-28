@@ -13,7 +13,7 @@ class DashboardController extends Controller
         if (!$profile) {
             // Failsafe in case profile wasn't created
             $profile = $request->user()->profile()->create([
-                'username' => \App\Http\Controllers\Auth\RegisteredUserController::uniqueUsername($request->user()->name),
+                'username' => \App\Models\Profile::generateUniqueUsername($request->user()->name),
                 'display_name' => $request->user()->name,
             ]);
             $profile->theme()->create(\App\Models\Theme::defaults());

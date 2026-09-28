@@ -41,7 +41,7 @@ class AdminUserController extends Controller
 
             // Auto-create Profile and Default Theme
             $profile = $user->profile()->create([
-                'username' => \App\Http\Controllers\Auth\RegisteredUserController::uniqueUsername($validated['name']),
+                'username' => \App\Models\Profile::generateUniqueUsername($validated['name']),
                 'display_name' => $validated['name'],
             ]);
             $profile->theme()->create(\App\Models\Theme::defaults());
@@ -61,9 +61,18 @@ class AdminUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'role' => ['required', 'in:admin,user'],
+            'username' => [
+                'required', 'string', 'max:50', 'alpha_dash',
+                Rule::unique('profiles', 'username')->ignore($user->profile?->id),
+                Rule::notIn(\App\Models\Profile::RESERVED_USERNAMES),
+            ],
         ]);
 
         $user->update($validated);
+
+        if ($user->profile) {
+            $user->profile->update(['username' => $validated['username']]);
+        }
 
         if ($request->filled('password')) {
             $request->validate(['password' => ['string', 'min:8', 'confirmed']]);

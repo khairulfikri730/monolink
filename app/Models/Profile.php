@@ -9,6 +9,36 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Profile extends Model
 {
+    /**
+     * Nama yang tidak boleh dipakai sebagai username publik karena
+     * bertabrakan dengan rute aplikasi.
+     */
+    public const RESERVED_USERNAMES = [
+        'admin', 'dashboard', 'login', 'logout', 'register', 'account',
+        'l', 'storage', 'up', 'api', 'password', 'settings', 'profile',
+        'confirm-password', 'forgot-password', 'reset-password', 'verify-email',
+    ];
+
+    /**
+     * Username unik berbasis nama lengkap: slug apa adanya, akhiran _2, _3,
+     * dst. hanya bila sudah dipakai; cadangan acak setelah 50 tabrakan.
+     */
+    public static function generateUniqueUsername(string $name): string
+    {
+        $base = \Illuminate\Support\Str::slug($name, '_');
+        if ($base === '' || in_array(\Illuminate\Support\Str::lower($base), self::RESERVED_USERNAMES, true)) {
+            $base = 'user';
+        }
+        $base = \Illuminate\Support\Str::lower($base);
+
+        $candidate = $base;
+        for ($i = 2; static::where('username', $candidate)->exists(); $i++) {
+            $candidate = $i <= 50 ? $base . '_' . $i : $base . '_' . \Illuminate\Support\Str::lower(\Illuminate\Support\Str::random(6));
+        }
+
+        return $candidate;
+    }
+
     protected $fillable = [
         'user_id', 'username', 'display_name', 'bio',
         'profile_image', 'logo', 'location', 'website', 'is_published',

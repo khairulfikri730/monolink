@@ -22,11 +22,7 @@ class ProfileController extends Controller
             'username' => [
                 'required', 'string', 'max:50', 'alpha_dash',
                 Rule::unique('profiles')->ignore($profile->id),
-                Rule::notIn([
-                    'admin', 'dashboard', 'login', 'logout', 'register', 'account',
-                    'l', 'storage', 'up', 'api', 'password', 'settings', 'profile',
-                    'confirm-password', 'forgot-password', 'reset-password', 'verify-email',
-                ]),
+                Rule::notIn(\App\Models\Profile::RESERVED_USERNAMES),
             ],
             'display_name' => ['required', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:255'],
