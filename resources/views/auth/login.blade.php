@@ -68,10 +68,7 @@
                     <span class="h-px flex-1 bg-gray-200"></span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium text-sm py-3 rounded-xl transition">
-                        <i data-lucide="user-plus" class="w-4 h-4"></i> Daftar
-                    </a>
+                <div class="grid grid-cols-1 gap-3">
                     <a href="/" class="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white font-medium text-sm py-3 rounded-xl transition">
                         <i data-lucide="home" class="w-4 h-4"></i> Beranda
                     </a>
